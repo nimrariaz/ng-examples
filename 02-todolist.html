@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>To do List</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>-->
+    <style>
+        body {
+            width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        table {
+            margin: 10px;
+            width: 100%;
+        }
+
+        th, tr, td {
+            border: 1px solid black
+        }
+
+        td {
+            padding: 5px 10px;
+        }
+
+        .highlight {
+            background-color: lightgreen !important;
+        }
+
+        .default {
+            background-color: transparent;
+        }
+
+    </style>
+</head>
+<body>
+<h1>
+    To Do List
+</h1>
+<br/>
+<div data-ng-controller="MyCtrl">
+    <form action="" data-ng-submit="handleSubmit($event)">
+        <input type="text" placeholder="New Entry" minlength="2" maxlength="10" name="input-box"
+               data-ng-model="nextTodo">
+        <input type="submit" class="add" value="{{ editState === undefined ? 'Add' : 'Update' }}">
+
+    </form>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        <tr data-ng-repeat="todo in todos"
+            data-ng-class="{'highlight': editState === $index, 'default': editState === undefined}">
+            <td>{{todo }}</td>
+            <td>
+                <button data-ng-click="editTodo($index)" data-ng-disabled="editState !== undefined">Edit</button>
+            </td>
+            <td>
+                <button data-ng-click="deleteTodo($index)" data-ng-disabled="editState !== undefined ">Delete</button>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+
+<script>
+    var myApp = angular.module('myApp', []);
+    myApp.controller('MyCtrl', MyCtrl);
+
+    MyCtrl.$inject = ['$scope'];
+
+    function MyCtrl($scope) {
+        $scope.editState = undefined;
+        $scope.nextTodo = '';
+        $scope.todos = ['Lorem', 'Epsum'];
+
+        $scope.handleSubmit = function ($event) {
+            $event.preventDefault();
+
+
+            if ($scope.editState === undefined) {
+                if ($scope.todos.indexOf($scope.nextTodo) === -1)
+                    $scope.todos.push($scope.nextTodo);
+                else
+                    console.log('Todo Already exists');
+
+            } else {
+                $scope.todos[$scope.editState] = $scope.nextTodo;
+                $scope.editState = undefined;
+            }
+
+            $scope.nextTodo = '';
+        };
+
+        $scope.editTodo = function (index) {
+            $scope.editState = index;
+            $scope.nextTodo = $scope.todos[$scope.editState];
+        };
+
+        $scope.deleteTodo = function (index) {
+            $scope.todos.splice(index, 1);
+        };
+    }
+</script>
+</body>
+</html>
