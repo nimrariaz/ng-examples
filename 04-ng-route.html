@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28//angular-route.min.js"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div id="navbar">
+                <ul class="nav navbar-nav">
+                    <li><a href="#/">Home</a></li>
+                    <li><a href="#product">Product</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div data-ng-view></div>
+<script>
+    var app = angular.module('myApp', ['ui.router']);
+    app.controller('HomeController', HomeController);
+    app.controller('ProductController', ProductController);
+    app.controller('AboutController', AboutController);
+    app.controller('ContactController', ContactController);
+    app.value('page', {page1: 'home', page2: 'product', page3: 'about', page4: 'contactus'});
+
+
+    app.config(function($stateProvider, $urlRouterProvider){
+
+        $urlRouterProvider.otherwise('/');
+        $routeProvider
+            .when('/', {
+                template: '<br> <br><h1>This is {{title}} page.</h1>',
+                controller: 'HomeController'
+            })
+            .when('/product', {
+                template: '<br> <br><h1>This is {{title}} page.</h1>',
+                controller: 'ProductController'
+            })
+            .when('/about', {
+                template: '<br> <br><h1>This is {{title}} page.</h1>',
+                controller: 'AboutController'
+            })
+            .when('/contact', {            
+                template: '<br> <br> <h1>This is {{title}} page.</h1>',
+                controller: 'ContactController'
+            });
+
+    });
+
+    HomeController.inject = ['$scope', 'page'];
+    function HomeController($scope, page) {
+        console.log(page.page1);
+        $scope.title = page.page1;
+        }
+
+    ProductController.inject = ['$scope', 'page'];
+    function ProductController($scope, page) {
+        console.log(page.page2);
+        $scope.title = page.page2;
+    }
+    AboutController.inject = ['$scope', 'page'];
+    function AboutController($scope, page) {
+        console.log(page.page3);
+        $scope.title = page.page3;
+    }
+    ContactController.inject = ['$scope', 'page'];
+    function ContactController($scope, page) {
+        console.log(page.page4);
+        $scope.title = page.page4;
+    }
+
+
+</script>
+</body>
+</html>
