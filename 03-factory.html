@@ -1,10 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-ng-app="myApp">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
 </head>
 <body>
-$END$
+<div data-ng-controller="MyCtrl">
+    <p>{{multiple}}</p>
+
+</div>
+<script>
+
+    var myApp = angular.module('myApp', []);
+    myApp.controller('MyCtrl', MyCtrl);
+
+    myApp.factory('productFactory', productFactory);
+    function  productFactory() {
+        var offset = 10;
+        var result;
+
+        return {
+            calPercentage: calPercentage,
+            message: message
+        };
+
+        function calPercentage() {
+            result = offset + 5;
+            console.log(result);
+            return result;
+        }
+        function message(input) {
+            console.log('Factory gives' + input);
+            return input;
+        }
+    }
+    myApp.service('localServices', function () {
+        this.xoxo = "lorem epsum";
+
+        this.message = function (input) {
+            console.log(input + ' service is available');
+            return input;
+        }
+    });
+
+    MyCtrl.$inject = ['$scope', 'productFactory', 'localServices'];
+
+    function MyCtrl($scope, productFactory, localServices) {
+
+        $scope.multiple = productFactory.calPercentage();
+        $scope.message = productFactory.message('Hello Factory');
+        console.log($scope.multiple + ' : ' + $scope.message);
+
+        console.log(localServices.message('Intra net'));
+    }
+
+</script>
 </body>
 </html>
