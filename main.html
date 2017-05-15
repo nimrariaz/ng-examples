@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<body ng-app="myApp">
+
+<header>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div id="navbar">
+                <ul class="nav navbar-nav">
+                    <li><a href="#/">Home</a></li>
+                    <li><a href="#product">Product</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div data-ng-view></div>
+
+<script>
+    var app = angular.module("myApp", ["ngRoute"]);
+    app.config(function($routeProvider) {
+        $routeProvider
+            .when("/", {
+                template : "<br><br><h1>This is Home page.</h1>"
+            })
+            .when("/about", {
+                template : "<br><br><h1>This is About page.</h1>"
+            })
+            .when("/product", {
+                template : "<br><br><h1>This is product page.</p>"
+            })
+            .when("/contact", {
+                template : "<br><br><h1>This is contact page.</p>"
+            });
+    });
+</script>
+
+</body>
+</html>
