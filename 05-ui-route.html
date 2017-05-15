@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body class="container">
+<h2>AngularJS UI Router</h2>
+
+<nav class="navbar navbar-default row">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <ul class="nav navbar-nav">
+                <li><a ui-sref="home">Home</a></li>
+                <li><a ui-sref="product">Product</a></li>
+                <li><a ui-sref="about">about</a></li>
+                <li><a ui-sref="contact">contact</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="row">
+    <div class="span12">
+        <div class="well" ui-view></div>
+        <!--Content of the above defined business & portfolio states will be injected here -->
+    </div>
+</div>
+
+<div class="col-sm-6">
+    <div class="panel panel-default" ui-view="view1"></div>
+</div>
+<div class="col-sm-6">
+    <div class="panel panel-default" ui-view="view2"></div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+<script src="http://angular-ui.github.io/ui-router/release/angular-ui-router.js"></script>
+<script>
+    var myApp = angular.module('myApp', ['ui.router']);
+    myApp.controller('FeatureController', FeatureController);
+    myApp.controller('ServiceController', ServiceController);
+
+    myApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+        $urlRouterProvider.otherwise("/home");
+
+        $stateProvider
+            .state('home', {
+                url: '/home',
+                template: '<h1>Home Page</h1> '
+            })
+            .state('product', {
+                url: "/product",
+                template: '<h1>Product Page</h1>' + '<ul>' +
+                '<li><a ui-sref=".features">Show features</a></li>' +
+                '<li><a ui-sref=".services">Show Services</a></li>' +
+                '</ul>' + '<div class="panel panel-default" ui-view></div>'
+
+            })
+            .state('product.features', {
+                url: "/features",
+                template: '<h3>List of Features</h3>' +
+                '<ul>' + '<li ng-repeat="feature in features">{{feature}}</li>' + '</ul>',
+                controller: FeatureController
+            })
+            .state('product.services', {
+                url: "/services",
+                template: '<h3>List of Services</h3>' +
+                '<ul>' + '<li ng-repeat="service in services">{{service}}</li>' + '</ul>',
+                controller: ServiceController
+            })
+            .state('about', {
+                url: '/about',
+                views: {
+                    '': {template: '<h1>About Page</h1>'}, <!-- Relative Name, means main template -->
+                    'view1@about': {template: '<h1>Lorem Epsum Emit View 1 </h1>'},
+                    'view2@about': {
+                        template: '<h1>View 2:</h1>'
+//                        + '<p data-ng-repeat="client in clients"> {{client}} </p>'
+//                        controller: AboutController
+                    }
+                }
+            })
+            .state('contact', {
+                url: "/contact",
+                template: '<h1>Contact Page</h1>'
+
+            })
+    }]);
+    FeatureController.inject = ['$scope'];
+    function FeatureController($scope) {
+        $scope.features = ['Easy Access', '24/7 Availability'];
+    }
+
+    ServiceController.inject = ['$scope'];
+    function ServiceController($scope) {
+        $scope.services = ["Selling", "Support", "Delivery", "Reparation"];
+    }
+
+    AboutController.inject = ['$scope'];
+    function AboutController($scope) {
+        $scope.clients = ["HP", "IBM", "MicroSoft"];
+    }
+
+</script>
+</body>
+</html>
