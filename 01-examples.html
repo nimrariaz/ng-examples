@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello Angular</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>-->
+</head>
+<body>
+<section data-ng-controller="MyCtrl">
+    <h1>Hello {{title}}</h1>
+</section>
+<section data-ng-controller="MyCtrl2">
+    Name: <input type="text" data-ng-model="name">
+    <h1> Good Morning: {{name}}</h1>
+</section>
+
+<div data-ng-init="names=['lorem','epsum','emit']">
+    <ul>
+        <li data-ng-repeat="x in names">
+            {{ x }}
+        </li>
+    </ul>
+    <!--<nimra></nimra>-->
+    <!--<div nimra></div>-->
+    <div class="nimra"></div>
+
+</div>
+
+
+
+<div data-ng-init=" data = [ {name:'Ramish',country:'Canada'}, {name:'Hege',country:'Norway'},{name:'Nimra',country:'london'}]">
+</div>
+
+<header data-ng-repeat-start="item in data">
+Header {{ item.name + ',' + item.country }}
+</header>
+<div class="body">
+Body {{ item }}
+</div>
+
+<footer data-ng-repeat-end>
+Footer {{ item }}
+</footer>
+<br/>
+<br/>
+
+<div data-ng-repeat="item in data | filter:'Canada' track by item.id">
+    <p>It will return item in the dictionary where 'Canada is found' , this wont work if keyword is found in multiple places</p>
+    {{item.name + ',' + item.country}}
+</div>
+
+
+
+<script>
+
+    var myApp = angular.module('myApp', []);
+    myApp.controller('MyCtrl', MyCtrl);
+    myApp.controller('MyCtrl2', MyCtrl2);
+
+    MyCtrl.$inject = ['$scope'];
+
+    function MyCtrl($scope) {
+        console.log('MyCtrl');
+        $scope.title = 'Angular !!';
+    }
+    function MyCtrl2($scope) {
+        console.log('MyCtrl2');
+        $scope.name = 'Nimra Riaz';
+    }
+    myApp.directive('nimra', function () {
+        return {
+            restrict: 'C',
+            template: '<h1>Element created by a directive!</h1>'
+        };
+    });
+
+
+</script>
+</body>
+</html>

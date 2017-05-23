@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello Angular</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
+</head>
+<body>
+<section data-ng-controller="MyCtrl">
+    <h1> Name: {{name}}</h1>
+    <input type="text" data-ng-model="name">
+    <hr>
+    <section data-ng-controller="MyCtrl2">
+        <h1> Name: {{name}}</h1>
+        <input type="text" data-ng-model="name">
+        <hr>
+    </section>
+</section>
+<script>
+    var myApp = angular.module('myApp', []);
+    myApp.controller('MyCtrl', MyCtrl);
+
+    MyCtrl.$inject = ['$scope', '$rootScope'];
+    function MyCtrl($scope, $rootScope) {
+//        $rootScope.name = 'Ctrl1!';
+//        $scope.name = 'Ctrl1!';
+        console.log('$scope1', $scope);
+    }
+
+    myApp.controller('MyCtrl2', MyCtrl2);
+    MyCtrl2.$inject = ['$scope', '$rootScope'];
+
+    function MyCtrl2($scope, $rootScope) {
+        $rootScope.name = 'Ctrl1!';
+//        $scope.name = 'Ctrl1!';
+        console.log('$scope2', $scope);
+    }
+</script>
+</body>
+</html>
+
+
+<!--Conclusion:-->
+<!--Child will take parents scope in absence of its own scope. Child element will look for value in its properties,-->
+<!--if not found it will check in its prototypes [and parent element has already added its property value as a prototype to child],-->
+<!--and child value will keep on changing as long as it doesn’t have its own property value, as soon as its property value-->
+<!--is created it will stop taking any changes in value from the parent.-->
